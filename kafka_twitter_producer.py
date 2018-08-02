@@ -5,16 +5,9 @@ from kafka import KafkaProducer
 from config import *
 
 SEARCH = "#askarmdata"
-TEST = True
 TOPIC = "tweets"
 
 def main():
-    if TEST:
-        CONSUMER_KEY = TEST_CONSUMER_KEY
-        CONSUMER_SECRET = TEST_CONSUMER_SECRET
-        ACCESS_TOKEN = TEST_ACCESS_TOKEN
-        ACCESS_TOKEN_SECRET = TEST_ACCESS_TOKEN_SECRET
-
     if os.path.isfile("lock"):
         os.remove("lock")
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)

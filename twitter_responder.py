@@ -7,8 +7,6 @@ from config import *
 from nltk_pos_tag import processContent
 from solr_search import search_solr
 
-TEST=True
-
 def twitter_response(message):
     print('twitter master')
     # collect all desired data fields
