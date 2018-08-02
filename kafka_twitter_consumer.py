@@ -3,8 +3,7 @@ import json
 from kafka import KafkaConsumer
 from kafka.structs import OffsetAndMetadata, TopicPartition
 
-from twitter_responder import *
-
+from twitter_responder import twitter_response
 TEST = True
 TOPIC = "tweets"
 

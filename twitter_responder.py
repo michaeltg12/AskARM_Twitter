@@ -12,10 +12,10 @@ TEST=True
 def twitter_response(message):
     print('twitter master')
     # collect all desired data fields
-    tweet = message["text"]
-    username = message["user"]["screen_name"]
-    user_id = message["user"]["id"]
-    id_str = message["user"]["id_str"]
+    tweet = message.value["text"]
+    username = message.value["user"]["screen_name"]
+    user_id = message.value["user"]["id"]
+    id_str = message.value["user"]["id_str"]
 
     link_base_pattern = "https://adc.arm.gov/discovery/#v/results/s"
 
@@ -78,20 +78,20 @@ def twitter_response(message):
             for link in rec_ds_links:
                 tweet_list.append("@{0}, ARM has your datastream search --> {1} : {2}".format(username, link, t))
         if len(tweet_list) > 0:
+            print('twitter master')
+            if TEST:
+                print('using test twitter api keys')
+                CONSUMER_KEY = TEST_CONSUMER_KEY
+                CONSUMER_SECRET = TEST_CONSUMER_SECRET
+                ACCESS_TOKEN = TEST_ACCESS_TOKEN
+                ACCESS_TOKEN_SECRET = TEST_ACCESS_TOKEN_SECRET
+
+            print('instantiating api')
+            auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+            auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+            api = tweepy.API(auth)
             for tweet_back in tweet_list:
                 try:
-                    print('twitter master')
-                    if TEST:
-                        print('using test twitter api keys')
-                        CONSUMER_KEY = TEST_CONSUMER_KEY
-                        CONSUMER_SECRET = TEST_CONSUMER_SECRET
-                        ACCESS_TOKEN = TEST_ACCESS_TOKEN
-                        ACCESS_TOKEN_SECRET = TEST_ACCESS_TOKEN_SECRET
-
-                    print('instantiating api')
-                    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-                    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-                    api = tweepy.API(auth)
                     api.update_status(tweet_back, in_reply_to_status_id=id_str)
                     print("tweet_back --> {}".format(tweet_back))
                 except tweepy.error.TweepError as twe4:
