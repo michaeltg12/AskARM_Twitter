@@ -4,6 +4,7 @@ import json
 import tweepy
 import datetime
 from kafka import KafkaConsumer
+from kafka.structs import OffsetAndMetadata, TopicPartition
 from config import *
 from nltk_pos_tag import processContent
 from solr_search import search_solr
@@ -25,15 +26,18 @@ def main():
         auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
         api = tweepy.API(auth)
 
-        kafka_consumer = KafkaConsumer(TOPIC, bootstrap_servers=['localhost:9092'],
-                                       consumer_timeout_ms=1000, auto_offset_reset='smallest')
+        kafka_consumer = KafkaConsumer(bootstrap_servers=['localhost:9092'],
+                                       consumer_timeout_ms=1000,
+                                       key_deserializer=lambda m: m.decode("utf-8"),
+                                       value_deserializer=lambda m: json.loads(m.decode("utf-8")),
+                                       auto_offset_reset="earliest",
+                                       group_id=1)
+        kafka_consumer.subscribe(TOPIC)
+
         for message in kafka_consumer:
             try:
                 this_result = json.loads(message.value.decode("utf-8"))
                 print(this_result)
-            except json.decoder.JSONDecodeError as e:
-                print("json decoder error : ", e)
-            else:
                 # collect all desired data fields
                 if 'text' in this_result:
                     tweet = this_result["text"]
@@ -111,6 +115,15 @@ def main():
                                         print(twe4)
                     except Exception as e:
                         print(e)
+                        tp = TopicPartition(message.topic, message.partition)
+                        offsets = {tp: OffsetAndMetadata(message.offset, None)}
+                        kafka_consumer.commit(offsets=offsets)
+            except Exception as e:
+                print(e)
+                tp = TopicPartition(message.topic, message.partition)
+                offsets = {tp: OffsetAndMetadata(message.offset, None)}
+                kafka_consumer.commit(offsets=offsets)
+
         kafka_consumer.close()
         print("No messages to process. Sleeping at {}".format(datetime.datetime.now()))
         time.sleep(5)
