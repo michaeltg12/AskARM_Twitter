@@ -1,9 +1,7 @@
 import pysolr
 import json
 
-browser_0 = 'http://ui1b.ornl.gov:8983/solr/browser_0'
-ds_info = 'http://ui1b.ornl.gov:8983/solr/datastream_info/'
-db_table = 'http://ui1b.ornl.gov:8983/solr/db_table/'
+from config import browser_0, ds_info, db_table
 
 TEST = True
 
