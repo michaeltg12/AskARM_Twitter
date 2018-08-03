@@ -99,7 +99,7 @@ done
 Version tracking done through [gitLab repository](https://code-int.ornl.gov/ofg/AskARM_Twitter)
 
 ## Authors
-* **Michael Giansiracusa** - *Initial work* giansiracumt@ornl.gov
+* **Michael Giansiracusa** - *Initial work* - giansiracumt@ornl.gov
 
 ## Acknowledgments
 * **Ranjeet Devarakonda** and **Jitu Kumar** - For outstanding support and patience
