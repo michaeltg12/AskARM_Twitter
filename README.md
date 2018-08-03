@@ -12,9 +12,10 @@ used are kafka, tweepy, nltk, and pysolr. This project also requires the user to
 file which should be in the main project directory. The user will need to have a key and token for the twitter api which
 can be obtained from https://apps.twitter.com/. The variables that will need to be defined for the twitter api are 
 CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET. The user will also have to define the solr endpoints, 
-the default endpoint is browser_0. This application also requires there to be a running kafka server. The kafka server 
-requires a zookeeper configuration manager to be running first, then the kafka server. The kafka server needs to have a 
-topic called "tweets". Once this is running the python scripts for kafka producer and consumer should be started. 
+the default endpoint is browser_0, ds_info and db_table will be imported by solr_search as well. This application also 
+requires there to be a running kafka server. The kafka server requires a zookeeper configuration manager to be running 
+first, then the kafka server. The kafka server needs to have a topic called "tweets". Once this is running the python 
+scripts for kafka producer and consumer should be started. 
 
 ## Downloading Kafka
 The easiest way to install Kafka is to download binaries and run it. Since it’s based on JVM languages like Scala and 
